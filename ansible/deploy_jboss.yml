@@ -8,7 +8,12 @@
       src: "{{ lookup('ansible.builtin.env', 'WORKSPACE') }}/target/applicationPetstore.war"
       dest: /home/ec2-user
 
-
+  - name: Undeploy war with jboss-cli.sh (with credentials)
+    ansible.builtin.shell: |
+      /home/ec2-user/jboss-eap-7.4/bin/jboss-cli.sh \
+        --user={{ lookup('ansible.builtin.env', 'JBOSS_CREDENTIALS_USR') }} \
+        --password={{ lookup('ansible.builtin.env', 'JBOSS_CREDENTIALS_PSW') }} \
+        -c --command="undeploy applicationPetstore.war"
 
   - name: Deploy war with jboss-cli.sh (with credentials)
     ansible.builtin.shell: |
